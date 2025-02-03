@@ -1,0 +1,10 @@
+*.env
+*.log
+*.tmp
+*.pid
+node_modules/
+coverage/
+public/uploads/
+endpoint-test/
+
+
