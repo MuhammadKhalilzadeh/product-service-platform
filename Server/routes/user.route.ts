@@ -1,4 +1,5 @@
 import express from "express";
+import { getAllUsers } from "../controllers/user.ctrl";
 const router = express.Router();
 
-router.get("/");
+router.get("/", getAllUsers);
