@@ -1,10 +1,14 @@
 import express from "express";
-
 const app = express();
+
+import userRoutes from "./routes/user.route";
 
 const port = process.env.PORT || 3000;
 
+app.use(express.json());
 try {
+  app.use("/users", userRoutes);
+
   app.use("/", (req, res) => {
     res.json("Hello buddy!");
   });
