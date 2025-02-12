@@ -1,5 +1,5 @@
 const SuperAdminRegister = () => {
-  return <div>SuperAdminRegister</div>;
+  return <>SuperAdminRegister</>;
 };
 
 export default SuperAdminRegister;
