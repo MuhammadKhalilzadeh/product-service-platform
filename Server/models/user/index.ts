@@ -1,4 +1,4 @@
-export type User = {
+type User = {
   // Unique Identification
   id: string;
   email: string;
@@ -19,3 +19,5 @@ export type User = {
   // Authentication & Security
   passwordHash: string;
 };
+
+export default User;
