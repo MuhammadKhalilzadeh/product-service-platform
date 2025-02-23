@@ -20,6 +20,7 @@ export async function getAllUsers(req: Request, res: Response): Promise<any> {
 }
 
 export async function createNewUser(req: Request, res: Response) {
+  console.log("createNewUser : ", req.body as User);
   try {
     if (READ_REAL_DATA) {
     } else {

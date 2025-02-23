@@ -2,15 +2,14 @@ import { AxiosResponse, AxiosRequestConfig } from "axios";
 import { IEntity } from "../../infrastructure/interfaces/ientity";
 import { User } from "../../domain/user";
 import { EntityService } from "../../infrastructure/interfaces/ientity";
+import { BASE_URL } from "../../flags";
 
 export class UserRepository implements IEntity<User> {
   private entityService: EntityService<User>;
 
-  constructor(
-    baseURL: string,
-    endpoint: string,
-    headers?: Record<string, string>
-  ) {
+  constructor(endpoint: string, headers?: Record<string, string>) {
+    const baseURL = BASE_URL;
+    console.log("URL: ", baseURL + endpoint);
     this.entityService = new EntityService<User>(baseURL, endpoint, headers);
   }
 

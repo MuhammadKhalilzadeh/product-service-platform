@@ -46,10 +46,7 @@ const SuperAdminRegister = () => {
     if (validation.isValid) {
       console.log("Form is valid", values);
       // Proceed with form submission
-      const userRepository = new UserRepository(
-        "https://api.example.com",
-        "/users"
-      );
+      const userRepository = new UserRepository("/users");
       const newUser: User = {
         firstName,
         lastName,
