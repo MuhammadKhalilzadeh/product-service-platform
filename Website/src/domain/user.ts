@@ -1,6 +1,6 @@
 export type User = {
   // Unique Identification
-  id: string;
+  id?: string;
   email: string;
   username?: string;
   phoneNumber?: string;
@@ -13,9 +13,9 @@ export type User = {
   bio?: string;
   languagePreference?: string;
   timezone?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 
   // Authentication & Security
-  passwordHash: string;
+  password: string;
 };

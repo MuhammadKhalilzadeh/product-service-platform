@@ -5,6 +5,8 @@ import TMButton from "../../../components/Buttons";
 import { useState } from "react";
 import { createSuperAdminValidationEngine } from "../../../../application/validations/engines";
 import { textfieldstyle } from "./style";
+import { UserRepository } from "../../../../application/repositories/user.repo";
+import { User } from "../../../../domain/user"; // Assuming you have a User model
 
 const SuperAdminRegister = () => {
   const [values, setValues] = useState({
@@ -23,7 +25,7 @@ const SuperAdminRegister = () => {
       setValues({ ...values, [prop]: event.target.value });
     };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const {
       firstName,
       lastName,
@@ -44,6 +46,24 @@ const SuperAdminRegister = () => {
     if (validation.isValid) {
       console.log("Form is valid", values);
       // Proceed with form submission
+      const userRepository = new UserRepository(
+        "https://api.example.com",
+        "/users"
+      );
+      const newUser: User = {
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        password,
+      };
+
+      try {
+        const response = await userRepository.create(newUser);
+        console.log("User created successfully", response.data);
+      } catch (error) {
+        console.error("Error creating user", error);
+      }
     } else {
       const errorObj: { [key: string]: string } = {};
       validation.errors.forEach((error) => {
