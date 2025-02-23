@@ -51,7 +51,7 @@ export class EntityService<T> implements IEntity<T> {
     data: T,
     config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
-    return this.networkService.put<T>(`${this.endpoint}/${id}`, data, config);
+    return this.networkService.patch<T>(`${this.endpoint}/${id}`, data, config);
   }
 
   public async delete(
