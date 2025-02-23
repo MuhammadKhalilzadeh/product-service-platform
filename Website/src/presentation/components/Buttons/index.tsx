@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, SxProps, Theme } from "@mui/material";
 
 interface TMButtonProps {
   label: string;
@@ -13,6 +13,7 @@ interface TMButtonProps {
     | "warning"
     | undefined;
   onClick?: () => void;
+  sx: SxProps<Theme> | undefined;
 }
 
 const TMButton: React.FC<TMButtonProps> = ({
@@ -20,13 +21,14 @@ const TMButton: React.FC<TMButtonProps> = ({
   variant = "contained",
   color = "primary",
   onClick,
+  sx,
 }) => {
   return (
     <Button
       variant={variant}
       disableElevation
       color={color}
-      sx={{ textTransform: "inherit" }}
+      sx={sx}
       onClick={onClick}
     >
       {label}
