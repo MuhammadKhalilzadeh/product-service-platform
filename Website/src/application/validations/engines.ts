@@ -54,3 +54,28 @@ export function createSuperAdminValidationEngine({
     errors,
   };
 }
+
+export function loginValidationEngine({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) {
+  const errors = [];
+
+  if (!email) {
+    errors.push("Email address cannot be empty.");
+  } else if (!validateEmail(email)) {
+    errors.push("Email address is not valid.");
+  }
+
+  if (!password) {
+    errors.push("Password cannot be empty.");
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors,
+  };
+}

@@ -4,7 +4,7 @@ import User from "../models/user";
 interface IUser extends Document, User {}
 
 const UserSchema: Schema = new Schema({
-  id: { type: String, required: true, unique: true },
+  id: { type: String, unique: true },
   email: { type: String, required: true, unique: true },
   username: { type: String },
   phoneNumber: { type: String },

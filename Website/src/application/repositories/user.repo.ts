@@ -33,6 +33,13 @@ export class UserRepository implements IEntity<User> {
     return this.entityService.create(data, config);
   }
 
+  public async login(
+    data: any,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<User>> {
+    return this.entityService.create(data, config);
+  }
+
   public async update(
     id: string,
     data: User,

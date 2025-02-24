@@ -17,6 +17,7 @@ type User = {
 
   // Authentication & Security
   passwordHash: string;
+  password?: string;
 };
 
 export default User;
