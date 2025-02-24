@@ -20,14 +20,11 @@ export async function getUserByEmail(email: string) {
 }
 
 export async function createUser(user: User) {
-  console.log("createUser 1");
   if (!user.password) {
     throw new Error("Password is required to create a user");
   }
   const securedPassword = await hashPassword(user.password);
-  console.log("createUser 2");
   const newUser = new UserModel({ ...user, passwordHash: securedPassword });
-  console.log("createUser 3");
   await newUser.save();
   return newUser;
 }
