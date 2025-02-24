@@ -9,3 +9,10 @@ export async function hashPassword(password: string): Promise<string> {
   const salt = await bcrypt.genSalt(saltRounds);
   return bcrypt.hash(password, salt);
 }
+
+export async function verifyPassword(
+  inputPassword: string,
+  hashedPassword: string
+) {
+  return bcrypt.compare(inputPassword, hashedPassword);
+}

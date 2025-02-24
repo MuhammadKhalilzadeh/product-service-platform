@@ -5,6 +5,7 @@ import TMButton from "../../../components/Buttons";
 import { useState } from "react";
 import { textfieldstyle } from "../SuperAdminRegister/style";
 import { loginValidationEngine } from "../../../../application/validations/engines";
+import { UserRepository } from "../../../../application/repositories/user.repo";
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -14,13 +15,21 @@ const Login = () => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const { email, password } = values;
     const validation = loginValidationEngine({ email, password });
 
     if (validation.isValid) {
       console.log("Form is valid", values);
       // Proceed with form submission
+      const userRepository = new UserRepository("/users/login");
+
+      try {
+        const response = await userRepository.login(values);
+        console.log("User logged in successfully", response.data);
+      } catch (error) {
+        console.error("Error while logging in user", error);
+      }
     } else {
       const errorObj: { [key: string]: string } = {};
       validation.errors.forEach((error) => {
