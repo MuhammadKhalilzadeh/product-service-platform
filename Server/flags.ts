@@ -1,1 +1,1 @@
-export const READ_REAL_DATA = false;
+export const READ_REAL_DATA = true;

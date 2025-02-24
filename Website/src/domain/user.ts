@@ -1,5 +1,6 @@
-type User = {
+export type User = {
   // Unique Identification
+  id?: string;
   email: string;
   username?: string;
   phoneNumber?: string;
@@ -12,11 +13,9 @@ type User = {
   bio?: string;
   languagePreference?: string;
   timezone?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 
   // Authentication & Security
-  passwordHash: string;
+  password: string;
 };
-
-export default User;
