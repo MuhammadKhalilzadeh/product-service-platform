@@ -1,6 +1,5 @@
 type User = {
   // Unique Identification
-  id: string;
   email: string;
   username?: string;
   phoneNumber?: string;

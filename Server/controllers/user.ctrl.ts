@@ -5,10 +5,13 @@ import {
   getAllMockUsers,
 } from "../mock/utils/user.mock.util";
 import User from "../models/user";
+import { getAllUsers as getAllUsersFromDB } from "../utils/user.util";
 
 export async function getAllUsers(req: Request, res: Response): Promise<any> {
   try {
     if (READ_REAL_DATA) {
+      const users = await getAllUsersFromDB();
+      res.status(200).json(users);
     } else {
       const users = getAllMockUsers();
       res.status(200).json(users);

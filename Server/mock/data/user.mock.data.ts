@@ -2,7 +2,6 @@ import User from "../../models/user";
 
 export const mockUsers: User[] = [
   {
-    id: "user1",
     email: "user1@example.com",
     username: "user1",
     phoneNumber: "123-456-7890",
@@ -18,7 +17,6 @@ export const mockUsers: User[] = [
     passwordHash: "hashedPassword1",
   },
   {
-    id: "user2",
     email: "user2@example.com",
     username: "user2",
     phoneNumber: "098-765-4321",
