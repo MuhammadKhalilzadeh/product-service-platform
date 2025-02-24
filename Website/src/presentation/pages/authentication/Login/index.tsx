@@ -4,6 +4,7 @@ import TMTextField from "../../../components/Inputs/Textfield";
 import TMButton from "../../../components/Buttons";
 import { useState } from "react";
 import { textfieldstyle } from "../SuperAdminRegister/style";
+import { loginValidationEngine } from "../../../../application/validations/engines";
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -11,8 +12,24 @@ const Login = () => {
     password: "",
   });
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
   const handleSubmit = () => {
-    console.log(values);
+    const { email, password } = values;
+    const validation = loginValidationEngine({ email, password });
+
+    if (validation.isValid) {
+      console.log("Form is valid", values);
+      // Proceed with form submission
+    } else {
+      const errorObj: { [key: string]: string } = {};
+      validation.errors.forEach((error) => {
+        if (error.includes("Email")) errorObj.email = error;
+        if (error.includes("Password")) errorObj.password = error;
+      });
+      setErrors(errorObj);
+      console.log("Form has errors", validation.errors);
+    }
   };
 
   return (
@@ -46,6 +63,8 @@ const Login = () => {
             value={values.email}
             sx={textfieldstyle}
             onChange={(e) => setValues({ ...values, email: e.target.value })}
+            error={!!errors.email}
+            helperText={errors.email}
           />
           <TMTextField
             placeholder="Password"
@@ -53,10 +72,12 @@ const Login = () => {
             value={values.password}
             sx={textfieldstyle}
             onChange={(e) => setValues({ ...values, password: e.target.value })}
+            error={!!errors.password}
+            helperText={errors.password}
           />
         </Stack>
         <TMButton
-          label="Create Account"
+          label="Login"
           sx={{ textTransform: "inherit" }}
           onClick={handleSubmit}
         />
