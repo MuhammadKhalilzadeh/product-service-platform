@@ -5,7 +5,10 @@ import {
   getAllMockUsers,
 } from "../mock/utils/user.mock.util";
 import User from "../models/user";
-import { getAllUsers as getAllUsersFromDB } from "../utils/user.util";
+import {
+  getAllUsers as getAllUsersFromDB,
+  getUserByEmail,
+} from "../utils/user.util";
 
 export async function getAllUsers(req: Request, res: Response): Promise<any> {
   try {
@@ -25,7 +28,13 @@ export async function getAllUsers(req: Request, res: Response): Promise<any> {
 export async function createNewUser(req: Request, res: Response) {
   console.log("createNewUser : ", req.body as User);
   try {
+    const userFromReq: User = req.body;
     if (READ_REAL_DATA) {
+      const anExistingUser = await getUserByEmail(userFromReq.email);
+      if (anExistingUser) {
+        res.status(409).json(anExistingUser);
+      } else {
+      }
     } else {
       const user = createNewMockUser(req.body as User);
       res.status(200).json(user);
