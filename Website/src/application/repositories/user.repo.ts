@@ -1,57 +1,32 @@
-import { AxiosResponse, AxiosRequestConfig } from "axios";
-import { IEntity } from "../../infrastructure/interfaces/ientity";
-import { User } from "../../domain/user";
-import { EntityService } from "../../infrastructure/interfaces/ientity";
-import { BASE_URL } from "../../flags";
+import { EntityPostRequest } from "../../infrastructure/api/endpoint";
 
-export class UserRepository implements IEntity<User> {
-  private entityService: EntityService<User>;
+const BASE_URL = "http://localhost:3000/";
 
-  constructor(endpoint: string, headers?: Record<string, string>) {
-    const baseURL = BASE_URL;
-    console.log("URL: ", baseURL + endpoint);
-    this.entityService = new EntityService<User>(baseURL, endpoint, headers);
-  }
+export async function RegisterUser(
+  data: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+  },
+  url: string
+) {
+  const response = await EntityPostRequest(data, BASE_URL + url);
+  return {
+    status: response.status,
+    data: response.data,
+    message: response.statusText,
+  };
+}
 
-  public async get(
-    id: string,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<User>> {
-    return this.entityService.get(id, config);
-  }
-
-  public async getAll(
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<User[]>> {
-    return this.entityService.getAll(config);
-  }
-
-  public async create(
-    data: User,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<User>> {
-    return this.entityService.create(data, config);
-  }
-
-  public async login(
-    data: any,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<User>> {
-    return this.entityService.create(data, config);
-  }
-
-  public async update(
-    id: string,
-    data: User,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<User>> {
-    return this.entityService.update(id, data, config);
-  }
-
-  public async delete(
-    id: string,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<void>> {
-    return this.entityService.delete(id, config);
-  }
+export async function LoginUser(
+  data: { email: string; password: string },
+  url: string
+) {
+  const response = await EntityPostRequest(data, BASE_URL + url);
+  return {
+    status: response.status,
+    data: response.data,
+    message: response.statusText,
+  };
 }
