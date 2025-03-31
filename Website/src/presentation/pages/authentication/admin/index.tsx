@@ -105,6 +105,7 @@ const AdminRegister = () => {
             alignItems: "center",
             gap: 5,
             overflow: "auto",
+            paddingTop: 10,
           }}
         >
           <Stack sx={{ marginTop: 10 }}>
