@@ -1,0 +1,17 @@
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  username VARCHAR(255) UNIQUE,
+  phoneNumber VARCHAR(20) UNIQUE,
+  firstName VARCHAR(255) NOT NULL,
+  lastName VARCHAR(255) NOT NULL,
+  dateOfBirth DATE,
+  profilePicture VARCHAR(255),
+  bio TEXT,
+  languagePreference VARCHAR(255),
+  timezone VARCHAR(255),
+  createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  passwordHash VARCHAR(255) NOT NULL
+);
+

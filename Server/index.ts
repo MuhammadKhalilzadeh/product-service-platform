@@ -1,37 +1,50 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
+import { checkAndCreateDatabase, checkAndCreateTables } from "./database/db";
 const app = express();
+const PORT = 3000;
 
 import userRoutes from "./routes/user.route";
 
-const port = process.env.PORT || 3000;
-const mongoUri =
-  process.env.MONGO_URI || "mongodb://localhost:27017/trademaster";
+const mongoUri = "mongodb://localhost:27017/trademaster";
 
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(mongoUri);
+app.use("/users", userRoutes);
 
-mongoose.connection.on("connected", () => {
-  console.log("Connected to MongoDB");
-});
+async function initializeDatabase() {
+  try {
+    await checkAndCreateDatabase();
+    await checkAndCreateTables();
+    // Continue with your server initialization
+  } catch (err) {
+    console.error("Failed to initialize database:", err);
+    process.exit(1);
+  }
+}
 
-mongoose.connection.on("error", (err) => {
-  console.error("Error connecting to MongoDB:", err);
-});
+initializeDatabase();
 
 try {
-  app.use("/users", userRoutes);
+  mongoose.connect(mongoUri);
 
-  app.use("/", (_, res) => {
-    res.json("Hello buddy!");
+  mongoose.connection.on("connected", () => {
+    console.log("Connected to MongoDB");
   });
 
-  app.listen(port, () => {
-    console.log(`Server running on port http://localhost:${port}/`);
+  mongoose.connection.on("error", (err) => {
+    console.log("Error connecting to MongoDB", err);
+  });
+
+  app.get("/", (req, res) => {
+    res.send("Hello, TypeScript with Node.js!");
+  });
+
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
   });
 } catch (error) {
-  console.error("Error setting up the server:", error);
+  console.error("An error occurred while starting the server", error);
 }

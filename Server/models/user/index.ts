@@ -16,7 +16,7 @@ type User = {
   updatedAt: Date;
 
   // Authentication & Security
-  passwordHash: string;
+  passwordhash: string;
   password?: string;
 };
 
