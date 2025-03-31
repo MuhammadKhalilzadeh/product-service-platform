@@ -1,35 +1,30 @@
-import { Button, SxProps, Theme } from "@mui/material";
+import { Button } from "@mui/material";
 
-interface TMButtonProps {
-  label: string;
-  variant?: "text" | "outlined" | "contained" | undefined;
-  color?:
-    | "inherit"
-    | "primary"
-    | "secondary"
-    | "success"
-    | "error"
-    | "info"
-    | "warning"
-    | undefined;
-  onClick?: () => void;
-  sx: SxProps<Theme> | undefined;
-}
-
-const TMButton: React.FC<TMButtonProps> = ({
+const TMButton = ({
   label,
-  variant = "contained",
-  color = "primary",
   onClick,
-  sx,
+}: {
+  label: string;
+  onClick: () => void;
 }) => {
   return (
     <Button
-      variant={variant}
-      disableElevation
-      color={color}
-      sx={sx}
       onClick={onClick}
+      sx={{
+        width: 200,
+        backgroundColor: "#FFFFFF",
+        color: "#000000",
+        borderRadius: "8px",
+        padding: "5px 10px",
+        fontSize: "16px",
+        fontWeight: "bold",
+        textTransform: "none",
+        border: "1px solid #000000", // Changed border color to match the text color
+        "&:hover": {
+          backgroundColor: "#FFFFFF",
+          opacity: 0.8,
+        },
+      }}
     >
       {label}
     </Button>

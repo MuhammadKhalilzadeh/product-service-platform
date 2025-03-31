@@ -1,3 +1,4 @@
+import "./style";
 import { Stack, Typography } from "@mui/material";
 import ServiceButton from "../../../components/Buttons/services/serviceButton";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -5,16 +6,19 @@ import AppleIcon from "@mui/icons-material/Apple";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TMTextField from "../../../components/Inputs/Textfield";
 import TMButton from "../../../components/Buttons";
+import TMPasswordStrengthCheck from "../../../components/checks/password";
 import TMSidePlate from "../../../components/Plates";
 import { useState } from "react";
-import TMLoadingPage from "../../../components/loading";
+import { RegisterUser } from "../../../../application/repositories/user.repo";
 import { useNavigate } from "react-router-dom";
-import { LoginUser } from "../../../../application/repositories/user.repo";
+import TMLoadingPage from "../../../components/loading";
 
-const Login = () => {
+const AdminRegister = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
   });
@@ -32,21 +36,28 @@ const Login = () => {
 
     try {
       setIsLoading(true);
-      // Replace with your actual login API call
-      const response = await LoginUser(formData, "users/login");
-      if (response.status === 202) {
-        navigate("/admin-reg"); // or wherever you want to redirect after login
+      const response = await RegisterUser(formData, "users/register");
+      if (response.status === 201) {
+        navigate("/login");
+      } else if (response.status === 400) {
+        console.error(response.data.error);
       } else {
         console.error(response.data.error);
       }
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Registration failed:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   function validateForm() {
+    if (formData.firstName.length < 3) {
+      return "First name must be at least 3 characters";
+    }
+    if (formData.lastName.length < 3) {
+      return "Last name must be at least 3 characters";
+    }
     if (formData.email.length < 3) {
       return "Email must be at least 3 characters";
     }
@@ -86,22 +97,24 @@ const Login = () => {
       >
         <TMSidePlate />
         <Stack
+          className="register-form"
           sx={{
             width: "100%",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             gap: 5,
+            overflow: "auto",
           }}
         >
-          <Stack>
+          <Stack sx={{ marginTop: 10 }}>
             <Typography
               sx={{
                 fontSize: 64,
                 fontWeight: "bold",
               }}
             >
-              Enter your credentials
+              Create Account
             </Typography>
             <Stack
               sx={{
@@ -117,6 +130,34 @@ const Login = () => {
             </Stack>
           </Stack>
           <Stack gap={2}>
+            <TMTextField
+              label="Your first name"
+              type="text"
+              required
+              value={formData.firstName}
+              onChange={handleInputChange}
+              name="firstName"
+              error={formData.firstName.length < 3}
+              helperText={
+                formData.firstName.length < 3
+                  ? "First name must be at least 3 characters"
+                  : ""
+              }
+            />
+            <TMTextField
+              label="Your last name"
+              type="text"
+              required
+              value={formData.lastName}
+              onChange={handleInputChange}
+              name="lastName"
+              error={formData.lastName.length < 3}
+              helperText={
+                formData.lastName.length < 3
+                  ? "Last name must be at least 3 characters"
+                  : ""
+              }
+            />
             <TMTextField
               label="Your email address"
               type="email"
@@ -146,6 +187,7 @@ const Login = () => {
               }
             />
           </Stack>
+          <TMPasswordStrengthCheck password={formData.password} />
           <Stack
             sx={{
               display: "flex",
@@ -153,49 +195,22 @@ const Login = () => {
               gap: "2px",
               justifyContent: "center",
               alignItems: "center",
+              marginBottom: 10,
             }}
           >
-            <TMButton label="Sign in" onClick={handleSubmit} />
+            <TMButton label="Sign Up" onClick={handleSubmit} />
             <Typography sx={{ textAlign: "center", fontSize: 11 }}>
-              Don't have an account?{" "}
+              Already have an account?{" "}
               <span
                 style={{
                   color: "#000000",
                   fontWeight: "bold",
                   cursor: "pointer",
                 }}
-                onClick={() => navigate("/admin-reg")}
+                onClick={() => navigate("/login")}
               >
-                Sign up
+                Sign in
               </span>
-            </Typography>
-          </Stack>
-          <Stack
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              gap: 0.5,
-            }}
-          >
-            <Typography
-              sx={{
-                textAlign: "center",
-                fontSize: 11,
-              }}
-            >
-              Forgot your password?
-            </Typography>
-            <Typography
-              sx={{
-                textAlign: "center",
-                fontSize: 11,
-                fontWeight: "bold",
-                cursor: "pointer",
-              }}
-              onClick={() => navigate("/forgot-password")}
-            >
-              Reset password
             </Typography>
           </Stack>
         </Stack>
@@ -204,4 +219,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminRegister;

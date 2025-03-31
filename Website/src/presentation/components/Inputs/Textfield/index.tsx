@@ -1,35 +1,49 @@
-import { SxProps, TextField, Theme } from "@mui/material";
+import { TextField } from "@mui/material";
 
-interface TMTextFieldProps {
-  placeholder: string;
-  type?: "text" | "email" | "date" | "password" | "tel" | "url";
-  value?: any;
-  onChange?: (e: any) => void;
-  sx?: SxProps<Theme> | undefined;
-  helperText?: string;
-  error?: boolean;
-}
-
-const TMTextField: React.FC<TMTextFieldProps> = ({
-  placeholder,
-  type = "text",
+const TMTextField = ({
+  label,
+  type,
+  required = false,
+  error = false,
+  helperText = "",
+  disabled = false,
   value,
   onChange,
-  sx,
-  helperText,
-  error,
+  name,
+}: {
+  label: string;
+  type: string;
+  required?: boolean;
+  error?: boolean;
+  helperText?: string;
+  disabled?: boolean;
+  value?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  name?: string;
 }) => {
   return (
     <TextField
-      variant="outlined"
+      disabled={disabled}
+      error={error}
+      required={required}
       size="small"
-      placeholder={placeholder}
+      label={label}
       type={type}
+      sx={{
+        width: 300,
+        border: "1px solid #DCDCDC",
+        backgroundColor: "#F4F4F4",
+        borderRadius: "8px",
+        "& .MuiInputBase-input": {
+          "&::placeholder": {
+            color: "#DCDCDC",
+          },
+        },
+      }}
+      helperText={helperText}
       value={value}
       onChange={onChange}
-      sx={sx}
-      helperText={helperText}
-      error={error}
+      name={name}
     />
   );
 };
