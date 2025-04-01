@@ -99,6 +99,7 @@ const Login = () => {
               sx={{
                 fontSize: 64,
                 fontWeight: "bold",
+                textAlign: "center",
               }}
             >
               Enter your credentials
