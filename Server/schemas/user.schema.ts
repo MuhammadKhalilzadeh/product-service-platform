@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import User from "../models/user.model";
+import User from "../models/user/index";
 
 interface IUser extends Document, User {}
 
@@ -17,7 +17,8 @@ const UserSchema: Schema = new Schema({
   timezone: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-  passwordHash: { type: String, required: true },
+  passwordhash: { type: String, required: true },
+  password: { type: String },
 });
 
 const UserModel = mongoose.model<IUser>("User", UserSchema);
