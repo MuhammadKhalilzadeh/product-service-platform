@@ -1,72 +1,151 @@
 import {
-  Button,
   Divider,
-  Drawer,
+  IconButton,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useTheme } from "@mui/material";
+import { toggleSidebar } from "../../../application/slicers/sidebarSlice";
 import logo from "../../assets/logos/tm-logo-png-black.png";
 import { SidebarMainItems, SidebarSecondaryItems } from "./sidebar-items";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+
 const Sidebar = () => {
-  const [open, setOpen] = useState(false);
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const collapsed = useSelector((state: any) => state.sidebar?.isCollapsed);
 
   return (
-    <Stack className="tr-sidebar" sx={{ padding: 2 }}>
-      <Button
-        variant="outlined"
-        size="large"
-        sx={{
-          backgroundColor: "#F4F4F4",
-          border: "1px solid #DCDCDC",
-          borderRadius: "8px",
-          color: "#000",
-        }}
-        onClick={() => setOpen(true)}
+    <Stack
+      component="aside"
+      className={`sidebar-menu ${collapsed ? "collapsed" : "expanded"}`}
+      sx={{
+        width: collapsed ? "80px" : "280px",
+        height: "100vh",
+        transition: "width 0.2s ease",
+        borderRight: 1,
+        borderColor: theme.palette.divider,
+        position: "relative",
+        backgroundColor: theme.palette.background.paper,
+        padding: theme.spacing(2),
+        px: 0,
+      }}
+    >
+      {/* Logo section */}
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+        gap={2}
+        sx={{ mb: 4, pl: collapsed ? 1 : 2 }}
       >
-        <MenuIcon />
-      </Button>
-      <Drawer open={open} onClose={() => setOpen(false)}>
-        <Stack className="tr-sidebar-drawer" sx={{ padding: 2 }}>
-          <Stack className="tr-sidebar-drawer-logo" sx={{ marginBottom: 2 }}>
-            <img
-              src={logo}
-              alt="logo"
-              style={{ width: "100px", margin: "auto" }}
-            />
-          </Stack>
-          <List>
-            {SidebarMainItems.map((item) => (
-              <ListItemButton key={item.id} sx={{ gap: 2 }}>
-                <ListItemIcon sx={{ minWidth: "fit-content" }}>
-                  {<item.icon />}
-                </ListItemIcon>
+        <img src={logo} alt="Logo" style={{ width: collapsed ? 40 : 150 }} />
+      </Stack>
+      {/* Toggle button */}
+      <IconButton
+        sx={{
+          position: "absolute",
+          top: 40,
+          right: 0,
+          transform: `translate(50%, 0)`,
+          backgroundColor: theme.palette.background.default,
+          border: 1,
+          borderColor: theme.palette.divider,
+          p: theme.spacing(0.5),
+          "&:hover": {
+            backgroundColor: theme.palette.action.hover,
+          },
+        }}
+        onClick={() => dispatch(toggleSidebar())}
+      >
+        {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+      </IconButton>
+
+      {/* Main menu items */}
+      <List sx={{ px: collapsed ? 1 : 2 }}>
+        {SidebarMainItems.map((item) => (
+          <Tooltip
+            key={item.id}
+            title={collapsed ? item.label : ""}
+            placement="right"
+            disableInteractive
+          >
+            <ListItemButton
+              onClick={() => navigate(item.path)}
+              sx={{
+                gap: 2,
+                borderRadius: 1,
+                minHeight: "40px",
+                backgroundColor:
+                  location.pathname === item.path ? "#F9F9F9" : "transparent",
+                "&:hover": { backgroundColor: "#F9F9F9" },
+                justifyContent: collapsed ? "center" : "flex-start",
+                px: collapsed ? 1 : 2,
+              }}
+            >
+              <ListItemIcon
+                sx={{ minWidth: collapsed ? "auto" : "fit-content" }}
+              >
+                {<item.icon />}
+              </ListItemIcon>
+              {!collapsed && (
                 <ListItemText>
                   <Typography sx={{ fontSize: 13 }}>{item.label}</Typography>
                 </ListItemText>
-              </ListItemButton>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {SidebarSecondaryItems.map((item) => (
-              <ListItemButton key={item.id} sx={{ gap: 2 }}>
-                <ListItemIcon sx={{ minWidth: "fit-content" }}>
-                  {<item.icon />}
-                </ListItemIcon>
+              )}
+            </ListItemButton>
+          </Tooltip>
+        ))}
+      </List>
+
+      <Divider sx={{ my: 2 }} />
+
+      {/* Secondary menu items */}
+      <List sx={{ px: collapsed ? 1 : 2 }}>
+        {SidebarSecondaryItems.map((item) => (
+          <Tooltip
+            key={item.id}
+            title={collapsed ? item.label : ""}
+            placement="right"
+            disableInteractive
+          >
+            <ListItemButton
+              onClick={() => navigate(item.path)}
+              sx={{
+                gap: 2,
+                borderRadius: 1,
+                minHeight: "40px",
+                backgroundColor:
+                  location.pathname === item.path ? "#F9F9F9" : "transparent",
+                "&:hover": { backgroundColor: "#F9F9F9" },
+                justifyContent: collapsed ? "center" : "flex-start",
+                px: collapsed ? 1 : 2,
+              }}
+            >
+              <ListItemIcon
+                sx={{ minWidth: collapsed ? "auto" : "fit-content" }}
+              >
+                {<item.icon />}
+              </ListItemIcon>
+              {!collapsed && (
                 <ListItemText>
                   <Typography sx={{ fontSize: 13 }}>{item.label}</Typography>
                 </ListItemText>
-              </ListItemButton>
-            ))}
-          </List>
-        </Stack>
-      </Drawer>
+              )}
+            </ListItemButton>
+          </Tooltip>
+        ))}
+      </List>
     </Stack>
   );
 };
