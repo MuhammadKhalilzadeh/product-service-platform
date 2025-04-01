@@ -8,8 +8,9 @@ const Dashboard = () => {
     <Stack
       className="dashbaord-layout"
       sx={{
+        minWidth: "100%",
+        width: "100%",
         flexDirection: "row",
-        gap: 14,
         position: "relative",
         minHeight: "100vh",
         maxWidth: "1400px",

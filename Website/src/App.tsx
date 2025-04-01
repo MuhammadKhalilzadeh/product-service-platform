@@ -7,6 +7,7 @@ import ForgotPassword from "./presentation/pages/authentication/forgot-password"
 import ConfirmCode from "./presentation/pages/authentication/confirm-code";
 import SetNewPassword from "./presentation/pages/authentication/set-new-password";
 import SuccessfulPasswordChange from "./presentation/pages/authentication/successful-pass-change";
+import TMGlobalMap from "./presentation/pages/global/home";
 
 function App() {
   return (
@@ -22,7 +23,9 @@ function App() {
           path="/successful-pass-change"
           element={<SuccessfulPasswordChange />}
         />
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />}>
+          <Route path="/" element={<TMGlobalMap />} />
+        </Route>
       </Routes>
     </Router>
   );
